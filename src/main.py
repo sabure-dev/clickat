@@ -8,4 +8,4 @@ app.include_router(cat.router)
 
 @app.get('/')
 async def main():
-    return {'data': 'HI!'}
+    return {'data': 'HIIII!'}

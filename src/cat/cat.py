@@ -13,4 +13,4 @@ async def get_clicks():
 
 @router.post('/')
 async def post_clicks():
-    return {'data': 'клики отправлены в базу данных! (+10 кликов)'}
+    return {'data': 'новые клики отправлены в базу данных! (+10 кликов)'}
