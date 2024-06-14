@@ -14,7 +14,7 @@ router = APIRouter(
 
 @router.get('/')
 async def get_user_data(user: models.User = Depends(get_current_user)):
-    return user
+    return {"user_clicks": user.clicks, "user_lvl": user.lvl}
 
 
 @router.put('/')
