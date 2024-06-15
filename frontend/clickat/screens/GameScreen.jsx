@@ -7,28 +7,25 @@ const GameScreen = () => {
     const [clicks, setClicks] = useState(0);
     const [catLevel, setCatLevel] = useState(1);
     const [requiredClicks, setRequiredClicks] = useState(10);
-
+    console.log(clicks)
 
     useEffect(() => {
         // Load data from DB when the component mounts
         loadProgress();
-    }, []);
 
-    useEffect(() => {
-        // Save data to DB when the state changes
-        
-        saveProgress();
     }, []);
 
     const handleCatTap = () => {
         setClicks(clicks + 1);
 
-        if (clicks + 1 >= requiredClicks) {
+        // console.log(clicks)
+        if ((clicks + 1 >= requiredClicks) && (clicks !== 1)) {
             setCatLevel(catLevel + 1);
-
+            saveLvl();
 
             setRequiredClicks(requiredClicks + (catLevel + 1) * 10);
         }
+        saveClicks();
     };
 
     const loadProgress = async () => {
@@ -52,19 +49,37 @@ const GameScreen = () => {
         }
     };
 
-    const saveProgress = async () => {
+    const saveClicks = async () => {
         try {
             const token = await AsyncStorage.getItem('token');
-
-            const response = await fetch('http://127.0.0.1:8000/api/cat/', {
+            const response = await fetch('http://127.0.0.1:8000/api/cat/clicks', {
                 method: 'PUT',
                 headers: {
                     'Authorization': `bearer ${token}`,
+                    'Content-Type': 'application/json'
                 },
-                body: {
-                    "clicks": clicks,
-                    "lvl": catLevel,
-                }
+                body: JSON.stringify({
+                    "clicks": clicks + 1,
+                })
+            });
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const saveLvl = async () => {
+        try {
+            const token = await AsyncStorage.getItem('token');
+            const response = await fetch('http://127.0.0.1:8000/api/cat/lvl', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "lvl": catLevel + 1,
+                })
             });
 
         } catch (error) {

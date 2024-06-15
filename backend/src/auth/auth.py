@@ -44,7 +44,7 @@ async def register(
     hashed_password = utils.get_password_hash(user.hashed_password)
     user.hashed_password = hashed_password
 
-    new_user = models.User(**user.model_dump(), lvl=0, clicks=0)
+    new_user = models.User(**user.model_dump(), lvl=1, clicks=0)
 
     db.add(new_user)
     await db.commit()

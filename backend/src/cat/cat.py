@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Body
 from sqlalchemy.ext.asyncio import AsyncSession
 from auth import models
 from auth.utils import get_current_user
-from cat.schemas import UserData
+from cat.schemas import UserClicks, UserLvl
 from database import get_async_session
 
 router = APIRouter(
@@ -26,13 +26,23 @@ async def get_user_data(user: models.User = Depends(get_current_user)):
 #     return user.clicks
 
 
-@router.put('/')
+@router.put('/clicks')
 async def update_clicks(
-        current_data: Annotated[UserData, Body()],
+        current_data: Annotated[UserClicks, Body()],
         db: AsyncSession = Depends(get_async_session),
         user: models.User = Depends(get_current_user),
-        ):
+):
     user.clicks = current_data.clicks
-    user.lvl = current_data.lvl
     await db.commit()
     return user.clicks
+
+
+@router.put('/lvl')
+async def update_lvl(
+        current_data: Annotated[UserLvl, Body()],
+        db: AsyncSession = Depends(get_async_session),
+        user: models.User = Depends(get_current_user),
+):
+    user.lvl = current_data.lvl
+    await db.commit()
+    return user.lvl
