@@ -18,4 +18,7 @@ class User(Base):
     lvl: Mapped[int]
     clicks: Mapped[int]
     required_clicks: Mapped[int]
+    # skins: Mapped[list["shop.models.Skin.name"]] = relationship(
+    #     back_populates="owner"
+    # )
     created_at: Mapped[created_at]

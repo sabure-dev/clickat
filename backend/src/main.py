@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from cat import cat
 from auth import auth
+from shop import shop
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -20,3 +21,5 @@ app.add_middleware(
 
 app.include_router(cat.router, prefix='/api')
 app.include_router(auth.router, prefix='/api')
+app.include_router(shop.router, prefix='/api')
+
