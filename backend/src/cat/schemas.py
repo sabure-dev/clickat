@@ -7,3 +7,4 @@ class UserClicks(BaseModel):
 
 class UserLvl(BaseModel):
     lvl: int
+    required_clicks: int

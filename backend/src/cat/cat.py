@@ -15,15 +15,7 @@ router = APIRouter(
 
 @router.get('/')
 async def get_user_data(user: models.User = Depends(get_current_user)):
-    return {"user_clicks": user.clicks, "user_lvl": user.lvl}
-
-
-# @router.put('/')
-# async def update_clicks(db: AsyncSession = Depends(get_async_session),
-#                         user: models.User = Depends(get_current_user)):
-#     user.clicks = user.clicks + 100
-#     await db.commit()
-#     return user.clicks
+    return {"user_clicks": user.clicks, "user_lvl": user.lvl, "user_required_clicks": user.required_clicks}
 
 
 @router.put('/clicks')
@@ -44,5 +36,6 @@ async def update_lvl(
         user: models.User = Depends(get_current_user),
 ):
     user.lvl = current_data.lvl
+    user.required_clicks = current_data.required_clicks
     await db.commit()
     return user.lvl

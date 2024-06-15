@@ -17,4 +17,5 @@ class User(Base):
     hashed_password: Mapped[str]
     lvl: Mapped[int]
     clicks: Mapped[int]
+    required_clicks: Mapped[int]
     created_at: Mapped[created_at]

@@ -7,7 +7,6 @@ const GameScreen = () => {
     const [clicks, setClicks] = useState(0);
     const [catLevel, setCatLevel] = useState(1);
     const [requiredClicks, setRequiredClicks] = useState(10);
-    console.log(clicks)
 
     useEffect(() => {
         // Load data from DB when the component mounts
@@ -17,13 +16,12 @@ const GameScreen = () => {
 
     const handleCatTap = () => {
         setClicks(clicks + 1);
-
-        // console.log(clicks)
         if ((clicks + 1 >= requiredClicks) && (clicks !== 1)) {
             setCatLevel(catLevel + 1);
             saveLvl();
 
             setRequiredClicks(requiredClicks + (catLevel + 1) * 10);
+
         }
         saveClicks();
     };
@@ -43,6 +41,7 @@ const GameScreen = () => {
 
             setClicks(result["user_clicks"]);
             setCatLevel(result["user_lvl"]);
+            setRequiredClicks(result["user_required_clicks"]);
 
         } catch (error) {
             console.error(error);
@@ -79,6 +78,7 @@ const GameScreen = () => {
                 },
                 body: JSON.stringify({
                     "lvl": catLevel + 1,
+                    "required_clicks": requiredClicks + (catLevel + 1) * 10,
                 })
             });
 
