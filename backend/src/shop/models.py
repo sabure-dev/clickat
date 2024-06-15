@@ -8,6 +8,5 @@ from database import Base
 class Skin(Base):
     __tablename__ = "skin"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str]
+    name: Mapped[str] = mapped_column(primary_key=True, unique=True)
     price: Mapped[int]

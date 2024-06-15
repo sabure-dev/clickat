@@ -1,9 +1,10 @@
 import datetime
-from typing import Annotated
-
+from typing import Annotated, List
+from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy import ForeignKey, text
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database import Base
+from shop import models
 
 
 created_at = Annotated[datetime.datetime, mapped_column(server_default=text("TIMEZONE('utc', now())"))]
@@ -18,7 +19,6 @@ class User(Base):
     lvl: Mapped[int]
     clicks: Mapped[int]
     required_clicks: Mapped[int]
-    # skins: Mapped[list["shop.models.Skin.name"]] = relationship(
-    #     back_populates="owner"
-    # )
+    active_skin: Mapped[str] = mapped_column(ForeignKey(models.Skin.name))
+    skins: Mapped[str]
     created_at: Mapped[created_at]
