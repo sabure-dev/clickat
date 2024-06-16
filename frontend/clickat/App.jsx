@@ -3,8 +3,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
-import GameScreen from './screens/GameScreen';
+import Loading from './screens/Loading';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import GameScreen2 from "./screens/GameScreen2";
 
 const Stack = createStackNavigator();
 
@@ -23,17 +24,23 @@ const App = () => {
         return (
             <NavigationContainer>
                 <Stack.Navigator>
-                    <Stack.Screen name="Game" component={GameScreen} options={{ headerLeft: null }}/>
+                    <Stack.Screen name="Loading" component={Loading} options={{headerShown: false}}/>
+                    <Stack.Screen name="Game2" component={GameScreen2} options={{headerShown: false}}/>
+
+                    <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
+                    <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown: false}}/>
                 </Stack.Navigator>
             </NavigationContainer>
         );
     } else {
         return (
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="Login">
-                    <Stack.Screen name="Login" component={LoginScreen} options={{ headerLeft: null }}/>
-                    <Stack.Screen name="Register" component={RegisterScreen} options={{ headerLeft: null }}/>
-                    <Stack.Screen name="Game" component={GameScreen} options={{ headerLeft: null }}/>
+                <Stack.Navigator initialRouteName="Loading">
+                    <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
+                    <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown: false}}/>
+                    <Stack.Screen name="Loading" component={Loading} options={{headerShown: false}}/>
+                    <Stack.Screen name="Game2" component={GameScreen2} options={{headerShown: false}}/>
+
 
                 </Stack.Navigator>
             </NavigationContainer>

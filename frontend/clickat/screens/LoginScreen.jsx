@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, TextInput, Button, TouchableOpacity} from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
 const LoginScreen = ({navigation}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -29,7 +30,7 @@ const LoginScreen = ({navigation}) => {
             await AsyncStorage.setItem('token', token['access_token']);
 
             if (response.status === 200) {
-                navigation.navigate('Game');
+                navigation.navigate('Game2');
             }
         } catch (error) {
             setError(error.message);
@@ -52,7 +53,9 @@ const LoginScreen = ({navigation}) => {
             />
             <Button title="Войти" onPress={handleLogin}/>
             {error && <Text style={{color: 'red'}}>{error}</Text>}
-            <TouchableOpacity onPress={() => {navigation.navigate('Register')}}>
+            <TouchableOpacity onPress={() => {
+                navigation.navigate('Register')
+            }}>
                 <Text>Зарегистрироваться</Text>
             </TouchableOpacity>
         </View>

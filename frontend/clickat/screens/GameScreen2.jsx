@@ -3,7 +3,7 @@ import {View, SafeAreaView, Text} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Cat from '../components/Cat';
 
-const GameScreen = () => {
+const GameScreen2 = ({navigation}) => {
     const [clicks, setClicks] = useState(0);
     const [catLevel, setCatLevel] = useState(1);
     const [requiredClicks, setRequiredClicks] = useState(10);
@@ -38,6 +38,12 @@ const GameScreen = () => {
             });
 
             const result = await response2.json();
+
+            if (response2.status !== 200) {
+                console.log(response2.status)
+                console.log('redirect to login')
+                navigation.navigate('Login');
+            }
 
             setClicks(result["user_clicks"]);
             setCatLevel(result["user_lvl"]);
@@ -102,4 +108,4 @@ const GameScreen = () => {
     );
 };
 
-export default GameScreen;
+export default GameScreen2;
