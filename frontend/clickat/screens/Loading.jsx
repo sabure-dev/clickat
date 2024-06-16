@@ -37,15 +37,13 @@ const Loading = ({navigation}) => {
                 },
             });
 
-            const result = await response2.json();
-
             if (response2.status !== 200) {
                 console.log(response2.status)
                 console.log('redirect to login')
                 navigation.navigate('Login');
             }
             else {
-                navigation.navigate('Game2')
+                navigation.navigate('Game')
             }
 
         } catch (error) {

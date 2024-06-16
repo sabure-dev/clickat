@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, Button, TouchableOpacity} from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {styles} from "./loginStyles";
 
 const RegisterScreen = ({navigation}) => {
     const [username, setUsername] = useState('');
@@ -27,23 +28,28 @@ const RegisterScreen = ({navigation}) => {
     };
 
     return (
-        <View>
-            <Text>Регистрация</Text>
+        <View style={styles.container}>
+            {/*<Image source={require('./logo.png')} style={styles.logo}/>*/}
+            <Text style={styles.title}>Регистрация</Text>
             <TextInput
                 value={username}
                 onChangeText={(text) => setUsername(text)}
                 placeholder="Имя пользователя"
+                style={styles.input}
             />
             <TextInput
                 value={hashed_password}
                 onChangeText={(text) => setPassword(text)}
                 placeholder="Пароль"
                 secureTextEntry={true}
+                style={styles.input}
             />
-            <Button title="Зарегистрироваться" onPress={handleRegister}/>
-            {error && <Text style={{color: 'ed'}}>{error}</Text>}
+            <Button title="Зарегистрироваться" onPress={handleRegister} style={styles.button}>
+                <Text style={styles.buttonText}>Зарегистрироваться</Text>
+            </Button>
+            {error && <Text style={styles.error}>{error}</Text>}
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                <Text>Уже есть аккаунт?</Text>
+                <Text style={styles.link}>Уже есть аккаунт?</Text>
             </TouchableOpacity>
         </View>
     );

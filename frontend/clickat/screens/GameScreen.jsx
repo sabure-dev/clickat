@@ -2,11 +2,13 @@ import React, {useState, useEffect} from 'react';
 import {View, SafeAreaView, Text} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Cat from '../components/Cat';
+import {styles} from "./loginStyles";
 
-const GameScreen2 = ({navigation}) => {
+const GameScreen = ({navigation}) => {
     const [clicks, setClicks] = useState(0);
     const [catLevel, setCatLevel] = useState(1);
     const [requiredClicks, setRequiredClicks] = useState(10);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         // Load data from DB when the component mounts
@@ -68,8 +70,12 @@ const GameScreen2 = ({navigation}) => {
                 })
             });
 
+            if (response.status === 401) {
+                setError('Please log in again!')
+            }
+
         } catch (error) {
-            console.error(error);
+            console.error(error, 'a');
         }
     };
 
@@ -104,8 +110,10 @@ const GameScreen2 = ({navigation}) => {
                 </Text>
             </View>
             <Cat onClick={handleCatTap}/>
+            {error && <Text style={{color: 'red'}}>{error}</Text>}
+
         </SafeAreaView>
     );
 };
 
-export default GameScreen2;
+export default GameScreen;

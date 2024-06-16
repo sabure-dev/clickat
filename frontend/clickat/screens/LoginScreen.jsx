@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, Button, TouchableOpacity} from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {styles} from "./loginStyles";
 
 
 const LoginScreen = ({navigation}) => {
@@ -30,7 +31,7 @@ const LoginScreen = ({navigation}) => {
             await AsyncStorage.setItem('token', token['access_token']);
 
             if (response.status === 200) {
-                navigation.navigate('Game2');
+                navigation.navigate('Game');
             }
         } catch (error) {
             setError(error.message);
@@ -38,25 +39,29 @@ const LoginScreen = ({navigation}) => {
     };
 
     return (
-        <View>
-            <Text>Вход</Text>
+        <View style={styles.container}>
+            <Text style={styles.title}>Вход</Text>
             <TextInput
                 value={username}
                 onChangeText={(text) => setUsername(text)}
                 placeholder="Имя пользователя"
+                style={styles.input}
             />
             <TextInput
                 value={password}
                 onChangeText={(text) => setPassword(text)}
                 placeholder="Пароль"
                 secureTextEntry={true}
+                style={styles.input}
             />
-            <Button title="Войти" onPress={handleLogin}/>
-            {error && <Text style={{color: 'red'}}>{error}</Text>}
+            <Button title="Войти" onPress={handleLogin} style={styles.button}>
+                <Text style={styles.buttonText}>Войти</Text>
+            </Button>
+            {error && <Text style={styles.error}>{error}</Text>}
             <TouchableOpacity onPress={() => {
                 navigation.navigate('Register')
             }}>
-                <Text>Зарегистрироваться</Text>
+                <Text style={styles.link}>Зарегистрироваться</Text>
             </TouchableOpacity>
         </View>
     );
