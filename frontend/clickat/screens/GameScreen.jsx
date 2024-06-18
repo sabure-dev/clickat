@@ -18,7 +18,9 @@ const GameScreen = ({navigation}) => {
     const [clicks, setClicks] = useState(0);
     const [catLevel, setCatLevel] = useState(1);
     const [requiredClicks, setRequiredClicks] = useState(10);
+    const [remainClicks, setRemainClicks] = useState(1);
     const [error, setError] = useState(null);
+
     // const [refreshing, setRefreshing] = useState(false)
 
     useEffect(() => {
@@ -34,6 +36,7 @@ const GameScreen = ({navigation}) => {
     };
 
     const handleCatTap = () => {
+
         setClicks(clicks + 1);
         if ((clicks + 1 >= requiredClicks) && (clicks !== 1)) {
             setCatLevel(catLevel + 1);
@@ -41,6 +44,10 @@ const GameScreen = ({navigation}) => {
 
             setRequiredClicks(requiredClicks + (catLevel + 1) * 10);
 
+            setRemainClicks((requiredClicks + (catLevel + 1) * 10) - (clicks) - 1);
+
+        } else {
+            setRemainClicks(remainClicks - 1);
         }
         saveClicks();
     };
@@ -67,6 +74,7 @@ const GameScreen = ({navigation}) => {
             setClicks(result["user_clicks"]);
             setCatLevel(result["user_lvl"]);
             setRequiredClicks(result["user_required_clicks"]);
+            setRemainClicks(result["user_required_clicks"] - result["user_clicks"]);
 
         } catch (error) {
             console.error(error);
@@ -128,24 +136,28 @@ const GameScreen = ({navigation}) => {
             {/*    }*/}
             {/*    scrollEnabled={true}*/}
             {/*>*/}
-                <View>
-                    <Text style={{fontSize: 24, fontWeight: 'bold'}}>
-                        {clicks} Кликов
-                    </Text>
-                    <Text style={{fontSize: 18, marginBottom: 10}}>
-                        Уровень котика: {catLevel}
-                    </Text>
-                </View>
-                <Cat onClick={handleCatTap}/>
-                <View style={{marginTop: 20}}>
-                    <TouchableOpacity style={styles.shopButton} onPress={() => navigation.navigate('Shop')}>
-                        <Text style={styles.shopButtonText}>Магазин</Text>
-                    </TouchableOpacity>
-                </View>
-                <TouchableOpacity onPress={onRefresh}>
-                    <Text>🔄</Text>
+            <View>
+                <Text>
+                    {remainClicks} осталось до {catLevel + 1} уровня
+                </Text>
+
+                <Text style={{fontSize: 24, fontWeight: 'bold'}}>
+                    {clicks} Кликов
+                </Text>
+                <Text style={{fontSize: 18, marginBottom: 10}}>
+                    Уровень котика: {catLevel}
+                </Text>
+            </View>
+            <Cat onClick={handleCatTap}/>
+            <View style={{marginTop: 20}}>
+                <TouchableOpacity style={styles.shopButton} onPress={() => navigation.navigate('Shop')}>
+                    <Text style={styles.shopButtonText}>Магазин</Text>
                 </TouchableOpacity>
-                {error && <Text style={{color: 'red'}}>{error}</Text>}
+            </View>
+            <TouchableOpacity onPress={onRefresh}>
+                <Text>🔄</Text>
+            </TouchableOpacity>
+            {error && <Text style={{color: 'red'}}>{error}</Text>}
             {/*</ScrollView>*/}
         </SafeAreaView>
     );
