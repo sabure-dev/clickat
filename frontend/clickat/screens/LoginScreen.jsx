@@ -19,7 +19,7 @@ const LoginScreen = ({navigation}) => {
                 formBody.push(encodedKey + "=" + encodedValue);
             }
             formBody = formBody.join("&");
-            const response = await fetch('http://192.168.51.231:8000/api/auth/token', {
+            const response = await fetch('https://clickat.onrender.com/api/auth/token', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

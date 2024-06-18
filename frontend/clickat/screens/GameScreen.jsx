@@ -49,7 +49,7 @@ const GameScreen = ({navigation}) => {
         try {
             const token = await AsyncStorage.getItem('token');
 
-            const response2 = await fetch('http://192.168.51.231:8000/api/cat/', {
+            const response2 = await fetch('https://clickat.onrender.com/api/cat/', {
                 method: 'GET',
                 headers: {
                     'Authorization': `bearer ${token}`,
@@ -76,7 +76,7 @@ const GameScreen = ({navigation}) => {
     const saveClicks = async () => {
         try {
             const token = await AsyncStorage.getItem('token');
-            const response = await fetch('http://192.168.51.231:8000/api/cat/clicks', {
+            const response = await fetch('https://clickat.onrender.com/api/cat/clicks', {
                 method: 'PUT',
                 headers: {
                     'Authorization': `bearer ${token}`,
@@ -99,7 +99,7 @@ const GameScreen = ({navigation}) => {
     const saveLvl = async () => {
         try {
             const token = await AsyncStorage.getItem('token');
-            const response = await fetch('http://192.168.51.231:8000/api/cat/lvl', {
+            const response = await fetch('https://clickat.onrender.com/api/cat/lvl', {
                 method: 'PUT',
                 headers: {
                     'Authorization': `bearer ${token}`,
