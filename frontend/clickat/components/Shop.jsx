@@ -17,7 +17,7 @@ const Shop = () => {
     const getSkins = async () => {
         try {
             const token = await AsyncStorage.getItem('token');
-            const response = await fetch('http://192.168.51.231:8000/api/skin', {
+            const response = await fetch('https://clickat.onrender.com/api/skin', {
                 method: 'GET',
                 headers: {
                     'Authorization': `bearer ${token}`,
@@ -35,7 +35,7 @@ const Shop = () => {
     const buySkin = async (name) => {
         try {
             const token = await AsyncStorage.getItem('token');
-            const response = await fetch(`http://192.168.51.231:8000/api/skin/buy/${name}`, {
+            const response = await fetch(`https://clickat.onrender.com/api/skin/buy/${name}`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `bearer ${token}`,
@@ -58,7 +58,7 @@ const Shop = () => {
     const equip = async (name) => {
         try {
             const token = await AsyncStorage.getItem('token');
-            const response = await fetch(`http://192.168.51.231:8000/api/skin/${name}`, {
+            const response = await fetch(`https://clickat.onrender.com/api/skin/${name}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `bearer ${token}`,
@@ -82,7 +82,7 @@ const Shop = () => {
     const setUserSkins = async () => {
         try {
             const token = await AsyncStorage.getItem('token');
-            const response = await fetch('http://192.168.51.231:8000/api/skin/my', {
+            const response = await fetch('https://clickat.onrender.com/api/skin/my', {
                 method: 'GET',
                 headers: {
                     'Authorization': `bearer ${token}`,

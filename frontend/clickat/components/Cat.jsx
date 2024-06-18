@@ -13,7 +13,7 @@ const Cat = ({onClick}) => {
     const getActiveSkin = async () => {
         try {
             const token = await AsyncStorage.getItem('token');
-            const response = await fetch(`http://192.168.51.231:8000/api/skin/active`, {
+            const response = await fetch(`https://clickat.onrender.com/api/skin/active`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `bearer ${token}`,
@@ -33,7 +33,7 @@ const Cat = ({onClick}) => {
     return (
         <TouchableOpacity onPress={onClick}>
             <Image
-                source={{uri: `http://192.168.51.231:8000/api/static/${activeSkin}.jpg`}}
+                source={{uri: `https://clickat.onrender.com/api/static/${activeSkin}.jpg`}}
                 style={{width: 200, height: 200, borderRadius: 10}}
             />
         </TouchableOpacity>
