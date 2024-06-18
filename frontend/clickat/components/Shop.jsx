@@ -112,7 +112,7 @@ const Shop = () => {
                 style={{height: 300}}
                 renderItem={({item}) => (
                     <View style={styles.skinItem}>
-                        <Image source={{uri: `http://192.168.51.231:8000/api/static/${item.image}`}}
+                        <Image source={{uri: `https://clickat.onrender.com/api/static/${item.image}`}}
                                style={styles.skinImageLarge}/>
                         <View style={{flex: 1, justifyContent: 'space-between'}}>
                             <Text style={styles.skinName}>{item.name}</Text>
