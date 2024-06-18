@@ -30,7 +30,7 @@ const Loading = ({navigation}) => {
         try {
             const token = await AsyncStorage.getItem('token');
 
-            const response2 = await fetch('http://127.0.0.1:8000/api/cat/', {
+            const response2 = await fetch('http://192.168.51.231:8000/api/cat/', {
                 method: 'GET',
                 headers: {
                     'Authorization': `bearer ${token}`,

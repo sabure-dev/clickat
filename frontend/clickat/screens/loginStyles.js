@@ -40,9 +40,11 @@ export const styles = {
         fontWeight: 'bold',
     },
     link: {
-        fontSize: 16,
-        color: '#4CAF50',
-        textDecorationLine: 'underline',
+        fontSize: 13,
+        color: '#020202',
+        fontWeight: 'bold',
+        marginTop: 5,
+        textDecorationLine: 'none',
     },
     error: {
         fontSize: 14,

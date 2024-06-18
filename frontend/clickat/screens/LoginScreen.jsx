@@ -19,7 +19,7 @@ const LoginScreen = ({navigation}) => {
                 formBody.push(encodedKey + "=" + encodedValue);
             }
             formBody = formBody.join("&");
-            const response = await fetch('http://127.0.0.1:8000/api/auth/token', {
+            const response = await fetch('http://192.168.51.231:8000/api/auth/token', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -61,7 +61,7 @@ const LoginScreen = ({navigation}) => {
             <TouchableOpacity onPress={() => {
                 navigation.navigate('Register')
             }}>
-                <Text style={styles.link}>Зарегистрироваться</Text>
+                <Text style={styles.link}>Создать аккаунт</Text>
             </TouchableOpacity>
         </View>
     );

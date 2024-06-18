@@ -3,7 +3,7 @@ from cat import cat
 from auth import auth
 from shop import shop
 from fastapi.middleware.cors import CORSMiddleware
-
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI(title="Click-Cat")
 
@@ -22,4 +22,4 @@ app.add_middleware(
 app.include_router(cat.router, prefix='/api')
 app.include_router(auth.router, prefix='/api')
 app.include_router(shop.router, prefix='/api')
-
+app.mount("/api/static", StaticFiles(directory="static"), name="static")

@@ -6,6 +6,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import Loading from './screens/Loading';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import GameScreen from "./screens/GameScreen";
+import Shop from "./components/Shop";
 
 const Stack = createStackNavigator();
 
@@ -26,7 +27,7 @@ const App = () => {
                 <Stack.Navigator>
                     <Stack.Screen name="Loading" component={Loading} options={{headerShown: false}}/>
                     <Stack.Screen name="Game" component={GameScreen} options={{headerShown: false}}/>
-
+                    <Stack.Screen name="Shop" component={Shop} options={{headerTitle: 'Назад'}}/>
                     <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
                     <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown: false}}/>
                 </Stack.Navigator>
@@ -40,6 +41,7 @@ const App = () => {
                     <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown: false}}/>
                     <Stack.Screen name="Loading" component={Loading} options={{headerShown: false}}/>
                     <Stack.Screen name="Game" component={GameScreen} options={{headerShown: false}}/>
+                    <Stack.Screen name="Shop" component={Shop} options={{headerTitle: 'Назад'}}/>
 
 
                 </Stack.Navigator>

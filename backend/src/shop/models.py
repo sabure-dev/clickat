@@ -10,3 +10,4 @@ class Skin(Base):
 
     name: Mapped[str] = mapped_column(primary_key=True, unique=True)
     price: Mapped[int]
+    image: Mapped[str]
