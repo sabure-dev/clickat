@@ -13,7 +13,8 @@ import SafeAreaView from 'react-native-safe-area-view';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Cat from '../components/Cat';
 import RNRestart from 'react-native-restart';
-import { useInterval } from 'usehooks-ts'
+import {useInterval} from 'usehooks-ts'
+import 'moment-timezone'
 
 const GameScreen = ({navigation}) => {
     const [clicks, setClicks] = useState(0);
@@ -24,14 +25,14 @@ const GameScreen = ({navigation}) => {
 
     useEffect(() => {
         // Load data from DB when the component mounts
-        loadProgress();
+        loadProgress().then(() => addTimeClicks().then(() => sendEnterTime()))
 
     }, []);
 
     useInterval(() => {
         const upd = (clicks + 0.1).toFixed(1)
         setClicks(parseFloat(upd));
-        saveClicks(0.1)
+        saveClicks(0.1);
     }, 10000);
 
     const onRefresh = () => {
@@ -40,7 +41,7 @@ const GameScreen = ({navigation}) => {
 
     const handleCatTap = () => {
 
-        setClicks(clicks + 10);
+        setClicks(clicks + 1);
         if ((clicks + 1 >= requiredClicks) && (clicks !== 1)) {
             setCatLevel(catLevel + 1);
             saveLvl();
@@ -54,6 +55,73 @@ const GameScreen = ({navigation}) => {
         }
         saveClicks(1);
     };
+
+    const addTimeClicks = async () => {
+        const enterTime = await getEnterTime();
+
+        const moment = require('moment-timezone');
+        const openTime = moment().tz('UTC')
+
+        const diffMinutes = openTime.diff(enterTime, 'minutes');
+
+        if (diffMinutes >= 10) {
+            const sec = diffMinutes * 60;
+            const multiplier = div(sec, 10);
+
+            const plus = multiplier * 0.1
+
+            const updatedClicks = clicks + plus
+
+            setClicks(updatedClicks);
+            saveClicks(plus);
+        }
+
+    }
+
+    function div(val, by) {
+        return (val - val % by) / by;
+    }
+
+    const getEnterTime = async () => {
+
+        try {
+            const token = await AsyncStorage.getItem('token');
+            const response = await fetch('https://clickat.onrender.com/api/cat/enter-time', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `bearer ${token}`,
+                },
+            });
+
+            const result = await response.json();
+            return result
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const sendEnterTime = async () => {
+        const moment = require('moment-timezone');
+        const openTime = moment().tz('UTC')
+
+        try {
+            const token = await AsyncStorage.getItem('token');
+            const response = await fetch('https://clickat.onrender.com/api/cat/enter-time', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "enter_time": openTime,
+                })
+            });
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     const loadProgress = async () => {
         try {
@@ -72,7 +140,7 @@ const GameScreen = ({navigation}) => {
                 navigation.navigate('Login');
             }
 
-            setClicks(result["user_clicks"]);
+            setClicks(parseFloat((result["user_clicks"]).toFixed(1)));
             setCatLevel(result["user_lvl"]);
             setRequiredClicks(result["user_required_clicks"]);
             setRemainClicks(result["user_required_clicks"] - result["user_clicks"]);
@@ -84,8 +152,6 @@ const GameScreen = ({navigation}) => {
 
     const saveClicks = async (add) => {
         try {
-            const upd = (clicks + 0.1).toFixed(1)
-        setClicks(parseFloat(upd));
             const token = await AsyncStorage.getItem('token');
             const response = await fetch('https://clickat.onrender.com/api/cat/clicks', {
                 method: 'PUT',
@@ -94,7 +160,7 @@ const GameScreen = ({navigation}) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "clicks": parseFloat((clicks + add).toFixed(1)),
+                    "clicks": parseFloat(add.toFixed(1)),
                 })
             });
 
@@ -103,7 +169,7 @@ const GameScreen = ({navigation}) => {
             }
 
         } catch (error) {
-            console.error(error, 'a');
+            console.error(error);
         }
     };
 

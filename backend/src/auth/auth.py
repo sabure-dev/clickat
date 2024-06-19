@@ -45,7 +45,7 @@ async def register(
     user.hashed_password = hashed_password
 
     new_user = models.User(**user.model_dump(), lvl=1, clicks=0, required_clicks=10, skins='cat_default',
-                           active_skin='cat_default')
+                           active_skin='cat_default', enter_time=None)
 
     db.add(new_user)
     await db.commit()

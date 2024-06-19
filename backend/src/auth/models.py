@@ -21,4 +21,5 @@ class User(Base):
     required_clicks: Mapped[int]
     active_skin: Mapped[str] = mapped_column(ForeignKey(models.Skin.name))
     skins: Mapped[str]
+    enter_time: Mapped[str | None]
     created_at: Mapped[created_at]
