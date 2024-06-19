@@ -31,8 +31,8 @@ const GameScreen = ({navigation}) => {
     useInterval(() => {
         const upd = (clicks + 0.1).toFixed(1)
         setClicks(parseFloat(upd));
-        console.log(clicks)
-    }, 1000);
+        saveClicks(0.1)
+    }, 10000);
 
     const onRefresh = () => {
         RNRestart.restart();
@@ -40,7 +40,7 @@ const GameScreen = ({navigation}) => {
 
     const handleCatTap = () => {
 
-        setClicks(clicks + 1);
+        setClicks(clicks + 10);
         if ((clicks + 1 >= requiredClicks) && (clicks !== 1)) {
             setCatLevel(catLevel + 1);
             saveLvl();
@@ -52,7 +52,7 @@ const GameScreen = ({navigation}) => {
         } else {
             setRemainClicks(remainClicks - 1);
         }
-        saveClicks();
+        saveClicks(1);
     };
 
     const loadProgress = async () => {
@@ -82,8 +82,10 @@ const GameScreen = ({navigation}) => {
         }
     };
 
-    const saveClicks = async () => {
+    const saveClicks = async (add) => {
         try {
+            const upd = (clicks + 0.1).toFixed(1)
+        setClicks(parseFloat(upd));
             const token = await AsyncStorage.getItem('token');
             const response = await fetch('https://clickat.onrender.com/api/cat/clicks', {
                 method: 'PUT',
@@ -92,7 +94,7 @@ const GameScreen = ({navigation}) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "clicks": clicks + 1,
+                    "clicks": parseFloat((clicks + add).toFixed(1)),
                 })
             });
 

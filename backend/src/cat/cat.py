@@ -24,7 +24,7 @@ async def update_clicks(
         db: AsyncSession = Depends(get_async_session),
         user: models.User = Depends(get_current_user),
 ):
-    user.clicks = current_data.clicks
+    user.clicks = user.clicks + current_data.clicks
     await db.commit()
     return user.clicks
 
