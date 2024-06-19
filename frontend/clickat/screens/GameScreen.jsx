@@ -105,6 +105,8 @@ const GameScreen = ({navigation}) => {
         const moment = require('moment-timezone');
         const openTime = moment().tz('UTC')
 
+        console.log(openTime.toString())
+
         try {
             const token = await AsyncStorage.getItem('token');
             const response = await fetch('https://clickat.onrender.com/api/cat/enter-time', {

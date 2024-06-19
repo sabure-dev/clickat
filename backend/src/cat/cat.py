@@ -58,6 +58,6 @@ async def send_enter_time(
         db: AsyncSession = Depends(get_async_session),
         user: auth_models.User = Depends(get_current_user)
 ):
-    user.enter_name = enter_time
+    user.enter_time = enter_time
     await db.commit()
     return enter_time
