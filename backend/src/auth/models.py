@@ -17,7 +17,7 @@ class User(Base):
     username: Mapped[str]
     hashed_password: Mapped[str]
     lvl: Mapped[int]
-    clicks: Mapped[int]
+    clicks: Mapped[float]
     required_clicks: Mapped[int]
     active_skin: Mapped[str] = mapped_column(ForeignKey(models.Skin.name))
     skins: Mapped[str]

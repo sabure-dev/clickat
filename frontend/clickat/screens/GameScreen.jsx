@@ -20,6 +20,8 @@ const GameScreen = ({navigation}) => {
     const [requiredClicks, setRequiredClicks] = useState(10);
     const [remainClicks, setRemainClicks] = useState(1);
     const [error, setError] = useState(null);
+    const [addClicks, setAddClicks] = useState(1)
+    // 1 + lvl * 0.1
 
     // const [refreshing, setRefreshing] = useState(false)
 
@@ -37,17 +39,17 @@ const GameScreen = ({navigation}) => {
 
     const handleCatTap = () => {
 
-        setClicks(clicks + 1);
-        if ((clicks + 1 >= requiredClicks) && (clicks !== 1)) {
+        setClicks(clicks + addClicks);
+        if ((clicks + addClicks >= requiredClicks) && (clicks !== 1)) {
             setCatLevel(catLevel + 1);
             saveLvl();
 
             setRequiredClicks(requiredClicks + (catLevel + 1) * 10);
 
-            setRemainClicks((requiredClicks + (catLevel + 1) * 10) - (clicks) - 1);
-
+            setRemainClicks(((requiredClicks + (catLevel + 1) * 10) - (clicks) - 1).toFixed(1));
+            setAddClicks(addClicks + (catLevel + 1) * 0.1)
         } else {
-            setRemainClicks(remainClicks - 1);
+            setRemainClicks(((requiredClicks + (catLevel + 1) * 10) - (clicks) - 1).toFixed(1));
         }
         saveClicks();
     };
@@ -66,8 +68,6 @@ const GameScreen = ({navigation}) => {
             const result = await response2.json();
 
             if (response2.status !== 200) {
-                console.log(response2.status)
-                console.log('redirect to login')
                 navigation.navigate('Login');
             }
 
@@ -75,6 +75,7 @@ const GameScreen = ({navigation}) => {
             setCatLevel(result["user_lvl"]);
             setRequiredClicks(result["user_required_clicks"]);
             setRemainClicks(result["user_required_clicks"] - result["user_clicks"]);
+            setAddClicks(1 + result["user_lvl"] * 0.1)
 
         } catch (error) {
             console.error(error);
@@ -91,7 +92,7 @@ const GameScreen = ({navigation}) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "clicks": clicks + 1,
+                    "clicks": clicks + addClicks,
                 })
             });
 
