@@ -54,7 +54,7 @@ async def get_enter_time(db: AsyncSession = Depends(get_async_session),
 
 @router.put('/enter-time')
 async def send_enter_time(
-        enter_time: str,
+        enter_time: Annotated[str, Body()],
         db: AsyncSession = Depends(get_async_session),
         user: auth_models.User = Depends(get_current_user)
 ):

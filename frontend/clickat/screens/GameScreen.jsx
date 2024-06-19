@@ -108,13 +108,13 @@ const GameScreen = ({navigation}) => {
         try {
             const token = await AsyncStorage.getItem('token');
             const response = await fetch('https://clickat.onrender.com/api/cat/enter-time', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Authorization': `bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "enter_time": openTime,
+                    "enter_time": openTime.toString(),
                 })
             });
 
