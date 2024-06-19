@@ -43,7 +43,7 @@ async def update_lvl(
     return user.lvl
 
 
-@router.get('enter-time')
+@router.get('/enter-time')
 async def get_enter_time(db: AsyncSession = Depends(get_async_session),
                          user: auth_models.User = Depends(get_current_user)):
     query = select(auth_models.User.enter_time).where(auth_models.User.username == user.username)
@@ -52,7 +52,7 @@ async def get_enter_time(db: AsyncSession = Depends(get_async_session),
     return result.scalars().first()
 
 
-@router.put('enter-time')
+@router.put('/enter-time')
 async def send_enter_time(
         enter_time: str,
         db: AsyncSession = Depends(get_async_session),
