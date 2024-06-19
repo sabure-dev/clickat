@@ -24,15 +24,32 @@ const GameScreen = ({navigation}) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Load data from DB when the component mounts
-        loadProgress().then(() => addTimeClicks().then(() => sendEnterTime()))
+        async function enteringTheGame() {
+            // Load data from DB when the component mounts
+            const clicks2 = await loadProgress();
+            await addTimeClicks(clicks2);
+            await sendEnterTime();
+        }
 
+        enteringTheGame();
     }, []);
 
     useInterval(() => {
         const upd = (clicks + 0.1).toFixed(1)
         setClicks(parseFloat(upd));
+        if ((clicks + 0.1 >= requiredClicks) && (clicks !== 1)) {
+            setCatLevel(catLevel + 1);
+            saveLvl();
+
+            setRequiredClicks(requiredClicks + (catLevel + 1) * 10);
+
+            setRemainClicks((requiredClicks + (catLevel + 1) * 10) - (clicks) - 0.1);
+
+        } else {
+            setRemainClicks(parseFloat((remainClicks - 0.1).toFixed(1)));
+        }
         saveClicks(0.1);
+
     }, 10000);
 
     const onRefresh = () => {
@@ -51,28 +68,29 @@ const GameScreen = ({navigation}) => {
             setRemainClicks((requiredClicks + (catLevel + 1) * 10) - (clicks) - 1);
 
         } else {
-            setRemainClicks(remainClicks - 1);
+            setRemainClicks(parseFloat((remainClicks - 1).toFixed(1)));
         }
         saveClicks(1);
     };
 
-    const addTimeClicks = async () => {
+    const addTimeClicks = async (clicks2) => {
         const enterTime = await getEnterTime();
 
         const moment = require('moment-timezone');
-        const openTime = moment().tz('UTC')
+        const openTime = moment().tz('UTC');
+        const enter = moment(enterTime);
 
-        const diffMinutes = openTime.diff(enterTime, 'minutes');
+        const diffMinutes = openTime.diff(enter, 'minutes');
 
         if (diffMinutes >= 10) {
             const sec = diffMinutes * 60;
             const multiplier = div(sec, 10);
 
-            const plus = multiplier * 0.1
+            const plus = multiplier * 0.1;
 
-            const updatedClicks = clicks + plus
+            const updatedClicks = (clicks2 + plus).toFixed(1);
 
-            setClicks(updatedClicks);
+            setClicks(parseFloat(updatedClicks));
             saveClicks(plus);
         }
 
@@ -105,8 +123,6 @@ const GameScreen = ({navigation}) => {
         const moment = require('moment-timezone');
         const openTime = moment().tz('UTC')
 
-        console.log(openTime.toString())
-
         try {
             const token = await AsyncStorage.getItem('token');
             const response = await fetch('https://clickat.onrender.com/api/cat/enter-time', {
@@ -115,9 +131,7 @@ const GameScreen = ({navigation}) => {
                     'Authorization': `bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    "enter_time": openTime.toString(),
-                })
+                body: JSON.stringify(openTime.toString())
             });
 
         } catch (error) {
@@ -146,6 +160,8 @@ const GameScreen = ({navigation}) => {
             setCatLevel(result["user_lvl"]);
             setRequiredClicks(result["user_required_clicks"]);
             setRemainClicks(result["user_required_clicks"] - result["user_clicks"]);
+
+            return parseFloat((result["user_clicks"]).toFixed(1))
 
         } catch (error) {
             console.error(error);
@@ -199,7 +215,7 @@ const GameScreen = ({navigation}) => {
         <SafeAreaView style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <View>
                 <Text>
-                    {remainClicks} осталось до {catLevel + 1} уровня
+                    {parseFloat(remainClicks.toFixed(1))} осталось до {catLevel + 1} уровня
                 </Text>
 
                 <Text style={{fontSize: 24, fontWeight: 'bold'}}>
