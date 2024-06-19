@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class UserClicks(BaseModel):
-    clicks: int
+    clicks: float
 
 
 class UserLvl(BaseModel):

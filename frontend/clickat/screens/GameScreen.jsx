@@ -13,6 +13,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Cat from '../components/Cat';
 import RNRestart from 'react-native-restart';
+import { useInterval } from 'usehooks-ts'
 
 const GameScreen = ({navigation}) => {
     const [clicks, setClicks] = useState(0);
@@ -20,10 +21,6 @@ const GameScreen = ({navigation}) => {
     const [requiredClicks, setRequiredClicks] = useState(10);
     const [remainClicks, setRemainClicks] = useState(1);
     const [error, setError] = useState(null);
-    const [addClicks, setAddClicks] = useState(1)
-    // 1 + lvl * 0.1
-
-    // const [refreshing, setRefreshing] = useState(false)
 
     useEffect(() => {
         // Load data from DB when the component mounts
@@ -31,25 +28,29 @@ const GameScreen = ({navigation}) => {
 
     }, []);
 
+    useInterval(() => {
+        const upd = (clicks + 0.1).toFixed(1)
+        setClicks(parseFloat(upd));
+        console.log(clicks)
+    }, 1000);
+
     const onRefresh = () => {
-        // setRefreshing(true);
         RNRestart.restart();
-        // setRefreshing(false);
     };
 
     const handleCatTap = () => {
 
-        setClicks(clicks + addClicks);
-        if ((clicks + addClicks >= requiredClicks) && (clicks !== 1)) {
+        setClicks(clicks + 1);
+        if ((clicks + 1 >= requiredClicks) && (clicks !== 1)) {
             setCatLevel(catLevel + 1);
             saveLvl();
 
             setRequiredClicks(requiredClicks + (catLevel + 1) * 10);
 
-            setRemainClicks(((requiredClicks + (catLevel + 1) * 10) - (clicks) - 1).toFixed(1));
-            setAddClicks(addClicks + (catLevel + 1) * 0.1)
+            setRemainClicks((requiredClicks + (catLevel + 1) * 10) - (clicks) - 1);
+
         } else {
-            setRemainClicks(((requiredClicks + (catLevel + 1) * 10) - (clicks) - 1).toFixed(1));
+            setRemainClicks(remainClicks - 1);
         }
         saveClicks();
     };
@@ -75,7 +76,6 @@ const GameScreen = ({navigation}) => {
             setCatLevel(result["user_lvl"]);
             setRequiredClicks(result["user_required_clicks"]);
             setRemainClicks(result["user_required_clicks"] - result["user_clicks"]);
-            setAddClicks(1 + result["user_lvl"] * 0.1)
 
         } catch (error) {
             console.error(error);
@@ -92,7 +92,7 @@ const GameScreen = ({navigation}) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "clicks": clicks + addClicks,
+                    "clicks": clicks + 1,
                 })
             });
 
@@ -127,16 +127,6 @@ const GameScreen = ({navigation}) => {
 
     return (
         <SafeAreaView style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            {/*<ScrollView*/}
-            {/*    resfreshControl={*/}
-            {/*        <RefreshControl*/}
-            {/*            refreshing={refreshing}*/}
-            {/*            onRefresh={onRefresh}*/}
-            {/*            colors={['#3498db']}*/}
-            {/*        />*/}
-            {/*    }*/}
-            {/*    scrollEnabled={true}*/}
-            {/*>*/}
             <View>
                 <Text>
                     {remainClicks} осталось до {catLevel + 1} уровня
@@ -159,7 +149,6 @@ const GameScreen = ({navigation}) => {
                 <Text>🔄</Text>
             </TouchableOpacity>
             {error && <Text style={{color: 'red'}}>{error}</Text>}
-            {/*</ScrollView>*/}
         </SafeAreaView>
     );
 };
