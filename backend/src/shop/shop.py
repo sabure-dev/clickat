@@ -43,13 +43,14 @@ async def buy_skin(name: str,
     skin = res.scalars().first()
 
     user_skins_res = await db.execute(select(auth_models.UserSkins).where(auth_models.UserSkins.username == user.username))
+
     user_skins = user_skins_res.scalars().all()
+    user_skins = [s.skin_name for s in user_skins]
 
-    print(user_skins)
-
-    if not (skin.name in user.skins):
+    if not (skin.name in user_skins):
         if user.clicks >= skin.price:
-            user.skins = user.skins + f', {skin.name}'
+            new_skin = auth_models.UserSkins(username=user.username, skin_name=skin.name)
+            db.add(new_skin)
             user.clicks = user.clicks - skin.price
             await db.commit()
         else:
@@ -65,7 +66,12 @@ async def buy_skin(name: str,
 async def change_active_skin(name: str,
                              db: AsyncSession = Depends(get_async_session),
                              user: auth_models.User = Depends(get_current_user)):
-    if name in user.skins:
+    user_skins_res = await db.execute(select(auth_models.UserSkins).where(auth_models.UserSkins.username == user.username))
+
+    user_skins = user_skins_res.scalars().all()
+    user_skins = [s.skin_name for s in user_skins]
+
+    if name in user_skins:
         print(name)
 
         user.active_skin = name
