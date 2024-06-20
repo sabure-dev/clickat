@@ -14,12 +14,19 @@ class User(Base):
     __tablename__ = "user"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[str]
+    username: Mapped[str] = mapped_column(unique=True)
     hashed_password: Mapped[str]
     lvl: Mapped[int]
     clicks: Mapped[float]
     required_clicks: Mapped[int]
     active_skin: Mapped[str] = mapped_column(ForeignKey(models.Skin.name))
-    skins: Mapped[str]
+    skins: Mapped[list[models.Skin]] = relationship(back_populates="owners", secondary="userskins")
     enter_time: Mapped[str | None]
     created_at: Mapped[created_at]
+
+
+class UserSkins(Base):
+    __tablename__ = "userskins"
+
+    username: Mapped[str] = mapped_column(ForeignKey(User.username, ondelete="CASCADE"), primary_key=True)
+    skin_name: Mapped[str] = mapped_column(ForeignKey(models.Skin.name, ondelete="CASCADE"), primary_key=True)

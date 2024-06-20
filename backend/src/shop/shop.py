@@ -28,7 +28,7 @@ async def get_skins(db: AsyncSession = Depends(get_async_session),
 @router.get('/my')
 async def get_user_skins(db: AsyncSession = Depends(get_async_session),
                          user: auth_models.User = Depends(get_current_user)):
-    query = select(auth_models.User.skins).where(auth_models.User.username == user.username)
+    query = select(auth_models.UserSkins.skin_name).where(auth_models.UserSkins.username == user.username)
     result = await db.execute(query)
 
     return result.scalars().all()
@@ -41,6 +41,11 @@ async def buy_skin(name: str,
     query = select(models.Skin).where(models.Skin.name == name)
     res = await db.execute(query)
     skin = res.scalars().first()
+
+    user_skins_res = await db.execute(select(auth_models.UserSkins).where(auth_models.UserSkins.username == user.username))
+    user_skins = user_skins_res.scalars().all()
+
+    print(user_skins)
 
     if not (skin.name in user.skins):
         if user.clicks >= skin.price:
