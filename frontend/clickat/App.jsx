@@ -42,8 +42,6 @@ const App = () => {
                     <Stack.Screen name="Loading" component={Loading} options={{headerShown: false}}/>
                     <Stack.Screen name="Game" component={GameScreen} options={{headerShown: false}}/>
                     <Stack.Screen name="Shop" component={Shop} options={{headerTitle: 'Назад'}}/>
-
-
                 </Stack.Navigator>
             </NavigationContainer>
         );
