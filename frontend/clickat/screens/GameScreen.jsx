@@ -15,6 +15,7 @@ import Cat from '../components/Cat';
 import RNRestart from 'react-native-restart';
 import {useInterval} from 'usehooks-ts'
 import 'moment-timezone'
+import Leader from "./Leaderboard";
 
 const GameScreen = ({navigation}) => {
     const [clicks, setClicks] = useState(0);
@@ -233,6 +234,13 @@ const GameScreen = ({navigation}) => {
                     <Text style={styles.shopButtonText}>Магазин</Text>
                 </TouchableOpacity>
             </View>
+
+            <View style={{marginTop: 10, marginBottom: 20}}>
+                <TouchableOpacity style={styles.leaderButton} onPress={() => navigation.navigate('Leader')}>
+                    <Text style={styles.shopButtonText}>Лучшие игроки</Text>
+                </TouchableOpacity>
+            </View>
+
             <TouchableOpacity onPress={onRefresh}>
                 <Text>🔄</Text>
             </TouchableOpacity>
@@ -244,6 +252,11 @@ const GameScreen = ({navigation}) => {
 const styles = {
     shopButton: {
         backgroundColor: '#4CAF50',
+        padding: 10,
+        borderRadius: 10,
+    },
+    leaderButton: {
+        backgroundColor: '#4695c9',
         padding: 10,
         borderRadius: 10,
     },
