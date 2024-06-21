@@ -26,8 +26,8 @@ const GameScreen = ({navigation}) => {
     useEffect(() => {
         async function enteringTheGame() {
             // Load data from DB when the component mounts
-            const clicks2 = await loadProgress();
-            await addTimeClicks(clicks2);
+            const res = await loadProgress();
+            await addTimeClicks(res[0], res[1]);
             await sendEnterTime();
         }
 
@@ -35,20 +35,20 @@ const GameScreen = ({navigation}) => {
     }, []);
 
     useInterval(() => {
-        const upd = (clicks + 0.1).toFixed(1)
+        const upd = (clicks + 0.1 * catLevel).toFixed(1)
         setClicks(parseFloat(upd));
-        if ((clicks + 0.1 >= requiredClicks) && (clicks !== 1)) {
+        if ((clicks + 0.1 * catLevel >= requiredClicks) && (clicks !== 1)) {
             setCatLevel(catLevel + 1);
             saveLvl();
 
             setRequiredClicks(requiredClicks + (catLevel + 1) * 10);
 
-            setRemainClicks((requiredClicks + (catLevel + 1) * 10) - (clicks) - 0.1);
+            setRemainClicks((requiredClicks + (catLevel + 1) * 10) - (clicks) - 0.1 * catLevel);
 
         } else {
-            setRemainClicks(parseFloat((remainClicks - 0.1).toFixed(1)));
+            setRemainClicks(parseFloat((remainClicks - 0.1 * catLevel).toFixed(1)));
         }
-        saveClicks(0.1);
+        saveClicks(0.1 * catLevel);
 
     }, 10000);
 
@@ -73,7 +73,7 @@ const GameScreen = ({navigation}) => {
         saveClicks(1);
     };
 
-    const addTimeClicks = async (clicks2) => {
+    const addTimeClicks = async (clicks2, catLevel2) => {
         const enterTime = await getEnterTime();
 
         const moment = require('moment-timezone');
@@ -86,7 +86,7 @@ const GameScreen = ({navigation}) => {
             const sec = diffMinutes * 60;
             const multiplier = div(sec, 10);
 
-            const plus = multiplier * 0.1;
+            const plus = multiplier * 0.1 * catLevel2;
 
             const updatedClicks = (clicks2 + plus).toFixed(1);
 
@@ -161,7 +161,9 @@ const GameScreen = ({navigation}) => {
             setRequiredClicks(result["user_required_clicks"]);
             setRemainClicks(result["user_required_clicks"] - result["user_clicks"]);
 
-            return parseFloat((result["user_clicks"]).toFixed(1))
+            const result2 = [parseFloat((result["user_clicks"]).toFixed(1)), result["user_lvl"]]
+
+            return result2
 
         } catch (error) {
             console.error(error);
