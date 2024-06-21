@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from cat import cat
 from auth import auth
 from shop import shop
+from leaderboard import leaderboard
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -22,4 +23,6 @@ app.add_middleware(
 app.include_router(cat.router, prefix='/api')
 app.include_router(auth.router, prefix='/api')
 app.include_router(shop.router, prefix='/api')
+app.include_router(leaderboard.router, prefix='/api')
+
 app.mount("/api/static", StaticFiles(directory="static"), name="static")
