@@ -5,6 +5,7 @@ from sqlalchemy import pool
 
 from auth.models import User
 from shop.models import Skin
+from challenge.models import Challenge
 from alembic import context
 
 from database import SQLALCHEMY_DATABASE_URL, Base

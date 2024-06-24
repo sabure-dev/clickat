@@ -8,7 +8,7 @@ from . import schemas
 
 router = APIRouter(
     prefix="/leaderboard",
-    tags=["Leaderboard.jsx"]
+    tags=["Leaderboard"]
 )
 
 

@@ -23,6 +23,7 @@ const GameScreen = ({navigation}) => {
     const [requiredClicks, setRequiredClicks] = useState(10);
     const [remainClicks, setRemainClicks] = useState(1);
     const [error, setError] = useState(null);
+    const [dailyChallenge, setDailyChallenge] = useState(null);
 
     useEffect(() => {
         async function enteringTheGame() {
@@ -30,6 +31,7 @@ const GameScreen = ({navigation}) => {
             const res = await loadProgress();
             await addTimeClicks(res[0], res[1]);
             await sendEnterTime();
+            await fetchDailyChallenge();
         }
 
         enteringTheGame();
@@ -214,6 +216,23 @@ const GameScreen = ({navigation}) => {
         }
     };
 
+    const fetchDailyChallenge = async () => {
+        try {
+            const token = await AsyncStorage.getItem('token');
+            const response = await fetch('https://clickat.onrender.com/api/challenge/', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `bearer ${token}`,
+                },
+            });
+
+            const result = await response.json();
+            setDailyChallenge(result);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <SafeAreaView style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <View>
@@ -240,6 +259,14 @@ const GameScreen = ({navigation}) => {
                     <Text style={styles.shopButtonText}>Лучшие игроки</Text>
                 </TouchableOpacity>
             </View>
+
+            {dailyChallenge && (
+                <View style={{marginTop: 20}}>
+                    <Text style={{fontSize: 18, fontWeight: 'bold'}}>Ежедневный челлендж:</Text>
+                    <Text>{dailyChallenge["name"]}</Text>
+                    <Text>Награда: {dailyChallenge["reward"]}</Text>
+                </View>
+            )}
 
             <TouchableOpacity onPress={onRefresh}>
                 <Text>🔄</Text>
