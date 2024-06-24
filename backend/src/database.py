@@ -10,8 +10,8 @@ class Base(DeclarativeBase):
     pass
 
 
-SQLALCHEMY_DATABASE_URL = f"postgresql+asyncpg://postgres:black_dragon164@localhost/clickat"
-# SQLALCHEMY_DATABASE_URL = f"postgresql+asyncpg://dragon:eBTHjighD22dEMZf9h93F8JLvZTNf045@dpg-cpooihaju9rs738stiig-a/clickat"
+# SQLALCHEMY_DATABASE_URL = f"postgresql+asyncpg://postgres:black_dragon164@localhost/clickat"
+SQLALCHEMY_DATABASE_URL = f"postgresql+asyncpg://dragon:eBTHjighD22dEMZf9h93F8JLvZTNf045@dpg-cpooihaju9rs738stiig-a/clickat"
 
 
 engine = create_async_engine(
