@@ -33,12 +33,12 @@ app.include_router(challenge.router, prefix='/api')
 app.mount("/api/static", StaticFiles(directory="static"), name="static")
 
 
-@app.on_event("startup")
-async def startup_event():
-    asyncio.create_task(background_task())
-
-
-async def background_task():
-    while True:
-        await challenge.select_daily_quest()
-        await asyncio.sleep(5)
+# @app.on_event("startup")
+# async def startup_event():
+#     asyncio.create_task(background_task())
+#
+#
+# async def background_task():
+#     while True:
+#         await challenge.select_daily_quest()
+#         await asyncio.sleep(5)
