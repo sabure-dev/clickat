@@ -39,4 +39,4 @@ async def startup_event():
 async def background_task():
     while True:
         await challenge.select_daily_quest()
-        await asyncio.sleep(5)
+        await asyncio.sleep(86400)

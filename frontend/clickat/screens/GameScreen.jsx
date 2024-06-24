@@ -227,7 +227,7 @@ const GameScreen = ({navigation}) => {
             });
 
             const result = await response.json();
-            setDailyChallenge(result);
+            setDailyChallenge(result[0]);
         } catch (error) {
             console.error(error);
         }
@@ -236,6 +236,14 @@ const GameScreen = ({navigation}) => {
     return (
         <SafeAreaView style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <View>
+                {dailyChallenge && (
+                    <View style={{marginBottom: 30, alignItems: 'center', backgroundColor: '#d3d3d3', paddingHorizontal: 10, paddingVertical: 3, borderRadius: 5}}>
+                        <Text style={{fontSize: 18, fontWeight: 'bold'}}>Ежедневный челлендж:</Text>
+                        <Text>Сделать {dailyChallenge["target"]} кликов</Text>
+                        <Text>Награда: {dailyChallenge["reward"]}</Text>
+                    </View>
+                )}
+
                 <Text>
                     {parseFloat(remainClicks.toFixed(1))} осталось до {catLevel + 1} уровня
                 </Text>
@@ -260,13 +268,6 @@ const GameScreen = ({navigation}) => {
                 </TouchableOpacity>
             </View>
 
-            {dailyChallenge && (
-                <View style={{marginTop: 20}}>
-                    <Text style={{fontSize: 18, fontWeight: 'bold'}}>Ежедневный челлендж:</Text>
-                    <Text>{dailyChallenge["name"]}</Text>
-                    <Text>Награда: {dailyChallenge["reward"]}</Text>
-                </View>
-            )}
 
             <TouchableOpacity onPress={onRefresh}>
                 <Text>🔄</Text>
