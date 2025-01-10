@@ -1,4 +1,4 @@
-Fancy clicker about cats!
+[development suspended] Fancy clicker about cats!
 Upgrade your cat, unlock new skins.
 
 Stack:
